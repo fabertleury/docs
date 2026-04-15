@@ -1,0 +1,74 @@
+---
+title: "Consultar Créditos"
+api: "GET /credits"
+description: "Retorna o saldo de créditos e estatísticas de uso"
+---
+
+## Request
+
+<ParamField query="from" type="string">
+  Data inicial para filtrar estatísticas de uso no formato `YYYY-MM-DD`.
+</ParamField>
+
+<ParamField query="to" type="string">
+  Data final para filtrar estatísticas de uso no formato `YYYY-MM-DD`.
+</ParamField>
+
+## Response
+
+<ResponseField name="balance" type="integer">
+  Saldo atual de créditos disponíveis.
+</ResponseField>
+
+<ResponseField name="used" type="integer">
+  Total de créditos utilizados (no período filtrado, se informado).
+</ResponseField>
+
+<ResponseField name="total_purchased" type="integer">
+  Total de créditos comprados (no período filtrado, se informado).
+</ResponseField>
+
+<ResponseField name="usage_by_company" type="array">
+  Detalhamento de uso por empresa.
+
+  <Expandable title="Campos">
+    <ResponseField name="company_id" type="string">
+      ID da empresa.
+    </ResponseField>
+    <ResponseField name="company_name" type="string">
+      Nome da empresa.
+    </ResponseField>
+    <ResponseField name="used" type="integer">
+      Créditos utilizados pela empresa.
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+<RequestExample>
+```bash
+curl -X GET "https://emitezap.com.br/api/partner/v1/credits?from=2026-04-01&to=2026-04-15" \
+  -H "X-API-Key: ez_live_abc123_sk_7f8a9b2c4d6e1f3a5b7c9d0e2f4a6b8c"
+```
+</RequestExample>
+
+<ResponseExample>
+```json 200
+{
+  "balance": 847,
+  "used": 153,
+  "total_purchased": 1000,
+  "usage_by_company": [
+    {
+      "company_id": "comp_9f8a7b6c5d4e3f2a",
+      "company_name": "Tech Solutions Ltda",
+      "used": 98
+    },
+    {
+      "company_id": "comp_1a2b3c4d5e6f7g8h",
+      "company_name": "Consultoria Digital Ltda",
+      "used": 55
+    }
+  ]
+}
+```
+</ResponseExample>

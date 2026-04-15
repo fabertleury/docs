@@ -1,80 +1,118 @@
 ---
 title: "Quickstart"
-description: "Start building awesome documentation in minutes"
+description: "Emita sua primeira nota fiscal em 5 minutos"
 ---
 
-## Get started in three steps
+## 1. Obtenha sua API Key
 
-Get your documentation site running locally and make your first customization.
+Acesse o [Painel de Parceiro](https://emitezap.com.br/painel/dashboard) e gere sua chave de API na seção **Configurações > API Keys**.
 
-### Step 1: Set up your local environment
+Sua chave terá o formato:
 
-<AccordionGroup>
-  <Accordion icon="copy" title="Clone your docs locally">
-    During the onboarding process, you created a GitHub repository with your docs content if you didn't already have one. You can find a link to this repository in your [dashboard](https://dashboard.mintlify.com).
-    
-    To clone the repository locally so that you can make and preview changes to your docs, follow the [Cloning a repository](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository) guide in the GitHub docs.
-  </Accordion>
-  <Accordion icon="rectangle-terminal" title="Start the preview server">
-    1. Install the Mintlify CLI: `npm i -g mint`
-    2. Navigate to your docs directory and run: `mint dev`
-    3. Open `http://localhost:3000` to see your docs live!
-    
-    <Tip>Your preview updates automatically as you edit files.</Tip>
-  </Accordion>
-</AccordionGroup>
+```
+ez_live_abc123_sk_7f8a9b2c4d6e1f3a5b7c9d0e2f4a6b8c
+```
 
-### Step 2: Deploy your changes
+<Warning>
+  Guarde sua chave em local seguro. Ela não será exibida novamente após a criação.
+</Warning>
 
-<AccordionGroup>
-  <Accordion icon="github" title="Install our GitHub app">
-    Install the Mintlify GitHub app from your [dashboard](https://dashboard.mintlify.com/settings/organization/github-app).
-    
-    Our GitHub app automatically deploys your changes to your docs site, so you don't need to manage deployments yourself.
-</Accordion>
-<Accordion icon="palette" title="Update your site name and colors">
-    For a first change, let's update the name and colors of your docs site.
+## 2. Verifique a conexão
 
-    1. Open `docs.json` in your editor.
-    2. Change the `"name"` field to your project name.
-    3. Update the `"colors"` to match your brand.
-    4. Save and see your changes instantly at `http://localhost:3000`.
+Teste sua chave listando suas empresas cadastradas:
 
-    <Tip>Try changing the primary color to see an immediate difference!</Tip>
-  </Accordion>
-</AccordionGroup>
+```bash
+curl -X GET https://emitezap.com.br/api/partner/v1/companies \
+  -H "X-API-Key: ez_live_abc123_sk_7f8a9b2c4d6e1f3a5b7c9d0e2f4a6b8c" \
+  -H "Content-Type: application/json"
+```
 
-### Step 3: Go live
+Se a chave estiver correta, você receberá uma lista (possivelmente vazia) de empresas.
 
-<Accordion icon="rocket" title="Publish your docs">
-  1. Commit and push your changes.
-  2. Your docs will update and be live in moments!
-</Accordion>
+## 3. Cadastre uma empresa
 
-## Next steps
+Cadastre a empresa que emitirá as notas:
 
-Now that you have your docs running, explore these key features:
+```bash
+curl -X POST https://emitezap.com.br/api/partner/v1/companies \
+  -H "X-API-Key: ez_live_abc123_sk_7f8a9b2c4d6e1f3a5b7c9d0e2f4a6b8c" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "cnpj": "12.345.678/0001-90",
+    "razao_social": "Tech Solutions Ltda",
+    "nome_fantasia": "TechSol",
+    "regime_tributario": "simples_nacional",
+    "municipio": "São Paulo",
+    "uf": "SP",
+    "email": "fiscal@techsol.com.br",
+    "inscricao_municipal": "12345678"
+  }'
+```
 
-<CardGroup cols={2}>
+Anote o `id` retornado — você precisará dele para emitir notas.
 
-<Card title="Write Content" icon="pen-to-square" href="/essentials/markdown">
-  Learn MDX syntax and start writing your documentation.
-</Card>
+## 4. Emita sua primeira NFS-e
 
-<Card title="Customize style" icon="palette" href="/essentials/settings">
-  Make your docs match your brand perfectly.
-</Card>
+Com a empresa cadastrada e créditos disponíveis, emita uma nota fiscal de serviço:
 
-<Card title="Add code examples" icon="square-code" href="/essentials/code">
-  Include syntax-highlighted code blocks.
-</Card>
+```bash
+curl -X POST https://emitezap.com.br/api/partner/v1/emit \
+  -H "X-API-Key: ez_live_abc123_sk_7f8a9b2c4d6e1f3a5b7c9d0e2f4a6b8c" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "company_id": "comp_9f8a7b6c5d4e3f2a",
+    "servico": {
+      "descricao": "Desenvolvimento de software sob demanda",
+      "valor": 5000.00
+    },
+    "tomador": {
+      "cpf_cnpj": "987.654.321-00",
+      "razao_social": "Maria Fernanda Silva",
+      "email": "maria@example.com"
+    },
+    "metadata": {
+      "external_id": "pedido-001"
+    }
+  }'
+```
 
-<Card title="API documentation" icon="code" href="/api-reference/introduction">
-  Auto-generate API docs from OpenAPI specs.
-</Card>
+Resposta:
 
-</CardGroup>
+```json
+{
+  "invoice_id": "inv_a1b2c3d4e5f6",
+  "status": "processing",
+  "external_id": "pedido-001",
+  "created_at": "2026-04-15T14:30:00Z"
+}
+```
 
 <Note>
-  **Need help?** See our [full documentation](https://mintlify.com/docs) or join our [community](https://mintlify.com/community).
+  A emissão é assíncrona. O status inicial será `processing`. Configure um [webhook](/conceitos/webhooks) para ser notificado quando a nota for autorizada.
 </Note>
+
+## 5. Consulte o status
+
+Acompanhe o status da nota emitida:
+
+```bash
+curl -X GET https://emitezap.com.br/api/partner/v1/invoices/inv_a1b2c3d4e5f6 \
+  -H "X-API-Key: ez_live_abc123_sk_7f8a9b2c4d6e1f3a5b7c9d0e2f4a6b8c"
+```
+
+## Próximos passos
+
+<CardGroup cols={2}>
+  <Card title="Autenticação" icon="key" href="/autenticacao">
+    Entenda API Keys, rate limiting e escopos
+  </Card>
+  <Card title="Créditos" icon="coins" href="/conceitos/creditos">
+    Como funciona o sistema de créditos
+  </Card>
+  <Card title="Webhooks" icon="webhook" href="/conceitos/webhooks">
+    Receba notificações em tempo real
+  </Card>
+  <Card title="API Reference" icon="code" href="/api-reference/emit">
+    Documentação completa de todos os endpoints
+  </Card>
+</CardGroup>

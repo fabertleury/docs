@@ -1,0 +1,98 @@
+---
+title: "Listar Tomadores"
+api: "GET /companies/{id}/customers"
+description: "Lista os tomadores (clientes) cadastrados de uma empresa"
+---
+
+## Request
+
+<ParamField path="id" type="string" required>
+  ID da empresa.
+</ParamField>
+
+<ParamField query="page" type="integer">
+  Número da página (padrão: 1).
+</ParamField>
+
+<ParamField query="per_page" type="integer">
+  Itens por página (padrão: 15, máximo: 100).
+</ParamField>
+
+## Response
+
+<ResponseField name="data" type="array">
+  Lista de tomadores.
+
+  <Expandable title="Campos do tomador">
+    <ResponseField name="id" type="string">
+      ID único do tomador.
+    </ResponseField>
+    <ResponseField name="cpf_cnpj" type="string">
+      CPF ou CNPJ do tomador.
+    </ResponseField>
+    <ResponseField name="razao_social" type="string">
+      Nome ou razão social do tomador.
+    </ResponseField>
+    <ResponseField name="email" type="string">
+      E-mail do tomador.
+    </ResponseField>
+    <ResponseField name="created_at" type="string">
+      Data de criação.
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+<ResponseField name="meta" type="object">
+  Informações de paginação.
+
+  <Expandable title="Campos de meta">
+    <ResponseField name="current_page" type="integer">
+      Página atual.
+    </ResponseField>
+    <ResponseField name="last_page" type="integer">
+      Última página.
+    </ResponseField>
+    <ResponseField name="per_page" type="integer">
+      Itens por página.
+    </ResponseField>
+    <ResponseField name="total" type="integer">
+      Total de registros.
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+<RequestExample>
+```bash
+curl -X GET "https://emitezap.com.br/api/partner/v1/companies/comp_9f8a7b6c5d4e3f2a/customers?page=1" \
+  -H "X-API-Key: ez_live_abc123_sk_7f8a9b2c4d6e1f3a5b7c9d0e2f4a6b8c"
+```
+</RequestExample>
+
+<ResponseExample>
+```json 200
+{
+  "data": [
+    {
+      "id": "cust_f1e2d3c4b5a6",
+      "cpf_cnpj": "987.654.321-00",
+      "razao_social": "Maria Fernanda Silva",
+      "email": "maria@example.com",
+      "created_at": "2026-04-12T09:15:00Z"
+    },
+    {
+      "id": "cust_a9b8c7d6e5f4",
+      "cpf_cnpj": "11.222.333/0001-44",
+      "razao_social": "Distribuidora Norte Ltda",
+      "email": "contato@distnorte.com.br",
+      "created_at": "2026-04-13T11:30:00Z"
+    }
+  ],
+  "meta": {
+    "current_page": 1,
+    "last_page": 1,
+    "per_page": 15,
+    "total": 2
+  }
+}
+```
+</ResponseExample>

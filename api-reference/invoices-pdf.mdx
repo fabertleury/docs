@@ -1,0 +1,51 @@
+---
+title: "Download PDF"
+api: "GET /invoices/{id}/pdf"
+description: "Retorna a URL para download do PDF da nota fiscal"
+---
+
+## Request
+
+<ParamField path="id" type="string" required>
+  ID da nota fiscal.
+</ParamField>
+
+## Response
+
+<ResponseField name="url" type="string">
+  URL temporária para download do PDF. Válida por 60 minutos.
+</ResponseField>
+
+<ResponseField name="expires_at" type="string">
+  Data e hora de expiração da URL.
+</ResponseField>
+
+<RequestExample>
+```bash
+curl -X GET https://emitezap.com.br/api/partner/v1/invoices/inv_a1b2c3d4e5f6/pdf \
+  -H "X-API-Key: ez_live_abc123_sk_7f8a9b2c4d6e1f3a5b7c9d0e2f4a6b8c"
+```
+</RequestExample>
+
+<ResponseExample>
+```json 200
+{
+  "url": "https://emitezap.com.br/storage/invoices/inv_a1b2c3d4e5f6/nfse-20260001.pdf?token=abc123&expires=1713200400",
+  "expires_at": "2026-04-15T15:30:00Z"
+}
+```
+
+```json 404
+{
+  "error": "invoice_not_found",
+  "message": "Nota fiscal não encontrada com o ID informado."
+}
+```
+
+```json 422
+{
+  "error": "pdf_not_available",
+  "message": "O PDF ainda não está disponível. A nota precisa estar autorizada."
+}
+```
+</ResponseExample>

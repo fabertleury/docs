@@ -1,0 +1,124 @@
+---
+title: "Atualizar Empresa"
+api: "PUT /companies/{id}"
+description: "Atualiza os dados de uma empresa existente"
+---
+
+## Request
+
+<ParamField path="id" type="string" required>
+  ID da empresa.
+</ParamField>
+
+<ParamField body="razao_social" type="string">
+  Razão social da empresa.
+</ParamField>
+
+<ParamField body="nome_fantasia" type="string">
+  Nome fantasia da empresa.
+</ParamField>
+
+<ParamField body="regime_tributario" type="string">
+  Regime tributário. Valores aceitos: `mei`, `simples_nacional`, `lucro_presumido`, `lucro_real`.
+</ParamField>
+
+<ParamField body="municipio" type="string">
+  Município da empresa.
+</ParamField>
+
+<ParamField body="uf" type="string">
+  UF da empresa.
+</ParamField>
+
+<ParamField body="email" type="string">
+  E-mail da empresa.
+</ParamField>
+
+<ParamField body="telefone" type="string">
+  Telefone da empresa.
+</ParamField>
+
+<ParamField body="logradouro" type="string">
+  Endereço da empresa.
+</ParamField>
+
+<ParamField body="numero" type="string">
+  Número do endereço.
+</ParamField>
+
+<ParamField body="inscricao_municipal" type="string">
+  Inscrição municipal.
+</ParamField>
+
+<ParamField body="inscricao_estadual" type="string">
+  Inscrição estadual.
+</ParamField>
+
+## Response
+
+<ResponseField name="id" type="string">
+  ID único da empresa.
+</ResponseField>
+
+<ResponseField name="cnpj" type="string">
+  CNPJ da empresa.
+</ResponseField>
+
+<ResponseField name="razao_social" type="string">
+  Razão social atualizada.
+</ResponseField>
+
+<ResponseField name="nome_fantasia" type="string">
+  Nome fantasia atualizado.
+</ResponseField>
+
+<ResponseField name="regime_tributario" type="string">
+  Regime tributário.
+</ResponseField>
+
+<ResponseField name="municipio" type="string">
+  Município.
+</ResponseField>
+
+<ResponseField name="uf" type="string">
+  UF.
+</ResponseField>
+
+<ResponseField name="updated_at" type="string">
+  Data da última atualização.
+</ResponseField>
+
+<RequestExample>
+```bash
+curl -X PUT https://emitezap.com.br/api/partner/v1/companies/comp_9f8a7b6c5d4e3f2a \
+  -H "X-API-Key: ez_live_abc123_sk_7f8a9b2c4d6e1f3a5b7c9d0e2f4a6b8c" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "nome_fantasia": "TechSol Digital",
+    "email": "nfe@techsol.com.br",
+    "telefone": "(11) 98888-7777"
+  }'
+```
+</RequestExample>
+
+<ResponseExample>
+```json 200
+{
+  "id": "comp_9f8a7b6c5d4e3f2a",
+  "cnpj": "12.345.678/0001-90",
+  "razao_social": "Tech Solutions Ltda",
+  "nome_fantasia": "TechSol Digital",
+  "regime_tributario": "simples_nacional",
+  "municipio": "São Paulo",
+  "uf": "SP",
+  "updated_at": "2026-04-15T16:00:00Z"
+}
+```
+
+```json 404
+{
+  "error": "company_not_found",
+  "message": "Empresa não encontrada com o ID informado."
+}
+```
+</ResponseExample>

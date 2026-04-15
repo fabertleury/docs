@@ -1,0 +1,104 @@
+---
+title: "Consultar Empresa"
+api: "GET /companies/{id}"
+description: "Retorna os detalhes de uma empresa específica"
+---
+
+## Request
+
+<ParamField path="id" type="string" required>
+  ID da empresa.
+</ParamField>
+
+## Response
+
+<ResponseField name="id" type="string">
+  ID único da empresa.
+</ResponseField>
+
+<ResponseField name="cnpj" type="string">
+  CNPJ da empresa.
+</ResponseField>
+
+<ResponseField name="razao_social" type="string">
+  Razão social da empresa.
+</ResponseField>
+
+<ResponseField name="nome_fantasia" type="string">
+  Nome fantasia da empresa.
+</ResponseField>
+
+<ResponseField name="regime_tributario" type="string">
+  Regime tributário.
+</ResponseField>
+
+<ResponseField name="municipio" type="string">
+  Município.
+</ResponseField>
+
+<ResponseField name="uf" type="string">
+  UF.
+</ResponseField>
+
+<ResponseField name="email" type="string">
+  E-mail da empresa.
+</ResponseField>
+
+<ResponseField name="telefone" type="string">
+  Telefone da empresa.
+</ResponseField>
+
+<ResponseField name="logradouro" type="string">
+  Endereço da empresa.
+</ResponseField>
+
+<ResponseField name="numero" type="string">
+  Número do endereço.
+</ResponseField>
+
+<ResponseField name="inscricao_municipal" type="string">
+  Inscrição municipal.
+</ResponseField>
+
+<ResponseField name="inscricao_estadual" type="string">
+  Inscrição estadual.
+</ResponseField>
+
+<ResponseField name="created_at" type="string">
+  Data de criação.
+</ResponseField>
+
+<RequestExample>
+```bash
+curl -X GET https://emitezap.com.br/api/partner/v1/companies/comp_9f8a7b6c5d4e3f2a \
+  -H "X-API-Key: ez_live_abc123_sk_7f8a9b2c4d6e1f3a5b7c9d0e2f4a6b8c"
+```
+</RequestExample>
+
+<ResponseExample>
+```json 200
+{
+  "id": "comp_9f8a7b6c5d4e3f2a",
+  "cnpj": "12.345.678/0001-90",
+  "razao_social": "Tech Solutions Ltda",
+  "nome_fantasia": "TechSol",
+  "regime_tributario": "simples_nacional",
+  "municipio": "São Paulo",
+  "uf": "SP",
+  "email": "fiscal@techsol.com.br",
+  "telefone": "(11) 99999-8888",
+  "logradouro": "Rua Augusta",
+  "numero": "1500",
+  "inscricao_municipal": "12345678",
+  "inscricao_estadual": null,
+  "created_at": "2026-04-10T10:00:00Z"
+}
+```
+
+```json 404
+{
+  "error": "company_not_found",
+  "message": "Empresa não encontrada com o ID informado."
+}
+```
+</ResponseExample>

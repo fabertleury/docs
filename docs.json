@@ -1,68 +1,75 @@
 {
   "$schema": "https://mintlify.com/docs.json",
   "theme": "mint",
-  "name": "Mint Starter Kit",
+  "name": "EmiteZap API",
   "colors": {
-    "primary": "#16A34A",
-    "light": "#07C983",
-    "dark": "#15803D"
+    "primary": "#18E299",
+    "light": "#18E299",
+    "dark": "#0fa76e"
   },
   "favicon": "/favicon.svg",
   "navigation": {
     "tabs": [
       {
-        "tab": "Guides",
+        "tab": "Documentacao",
         "groups": [
           {
-            "group": "Getting started",
+            "group": "Inicio",
             "pages": [
               "index",
               "quickstart",
-              "development"
+              "autenticacao"
             ]
           },
           {
-            "group": "Customization",
+            "group": "Conceitos",
             "pages": [
-              "essentials/settings",
-              "essentials/navigation"
-            ]
-          },
-          {
-            "group": "Writing content",
-            "pages": [
-              "essentials/markdown",
-              "essentials/code",
-              "essentials/images",
-              "essentials/reusable-snippets"
-            ]
-          },
-          {
-            "group": "AI tools",
-            "pages": [
-              "ai-tools/cursor",
-              "ai-tools/claude-code",
-              "ai-tools/windsurf"
+              "conceitos/creditos",
+              "conceitos/tipos-nota",
+              "conceitos/webhooks"
             ]
           }
         ]
       },
       {
-        "tab": "API reference",
+        "tab": "API Reference",
         "groups": [
           {
-            "group": "API documentation",
+            "group": "Emissao",
             "pages": [
-              "api-reference/introduction"
+              "api-reference/emit"
             ]
           },
           {
-            "group": "Endpoint examples",
+            "group": "Empresas",
             "pages": [
-              "api-reference/endpoint/get",
-              "api-reference/endpoint/create",
-              "api-reference/endpoint/delete",
-              "api-reference/endpoint/webhook"
+              "api-reference/companies-list",
+              "api-reference/companies-create",
+              "api-reference/companies-show",
+              "api-reference/companies-update"
+            ]
+          },
+          {
+            "group": "Tomadores",
+            "pages": [
+              "api-reference/customers-list",
+              "api-reference/customers-create"
+            ]
+          },
+          {
+            "group": "Notas Fiscais",
+            "pages": [
+              "api-reference/invoices-list",
+              "api-reference/invoices-show",
+              "api-reference/invoices-pdf",
+              "api-reference/invoices-xml",
+              "api-reference/invoices-cancel"
+            ]
+          },
+          {
+            "group": "Creditos",
+            "pages": [
+              "api-reference/credits"
             ]
           }
         ]
@@ -71,14 +78,14 @@
     "global": {
       "anchors": [
         {
-          "anchor": "Documentation",
-          "href": "https://mintlify.com/docs",
-          "icon": "book-open-cover"
+          "anchor": "Painel",
+          "href": "https://emitezap.com.br/painel/dashboard",
+          "icon": "gauge"
         },
         {
-          "anchor": "Blog",
-          "href": "https://mintlify.com/blog",
-          "icon": "newspaper"
+          "anchor": "Status",
+          "href": "https://emitezap.com.br",
+          "icon": "signal"
         }
       ]
     }
@@ -90,33 +97,22 @@
   "navbar": {
     "links": [
       {
-        "label": "Support",
-        "href": "mailto:hi@mintlify.com"
+        "label": "Suporte",
+        "href": "mailto:suporte@emitezap.com.br"
       }
     ],
     "primary": {
       "type": "button",
-      "label": "Dashboard",
-      "href": "https://dashboard.mintlify.com"
+      "label": "Criar conta",
+      "href": "https://emitezap.com.br/registro"
     }
-  },
-  "contextual": {
-    "options": [
-     "copy",
-     "view",
-     "chatgpt",
-     "claude",
-     "perplexity",
-     "mcp",
-     "cursor",
-     "vscode"
-   ]
   },
   "footer": {
     "socials": {
-      "x": "https://x.com/mintlify",
-      "github": "https://github.com/mintlify",
-      "linkedin": "https://linkedin.com/company/mintlify"
+      "website": "https://emitezap.com.br"
     }
+  },
+  "api": {
+    "baseUrl": "https://emitezap.com.br/api/partner/v1"
   }
 }

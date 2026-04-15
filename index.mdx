@@ -1,97 +1,48 @@
 ---
-title: "Introduction"
-description: "Welcome to the new home for your documentation"
+title: EmiteZap Partner API
+description: Integre a emissao de notas fiscais no seu produto
 ---
 
-## Setting up
+# EmiteZap Partner API
 
-Get your documentation site up and running in minutes.
+A Partner API permite que resellers e integradores emitam notas fiscais (NFS-e e NF-e) para seus clientes de forma programatica.
 
-<Card
-  title="Start here"
-  icon="rocket"
-  href="/quickstart"
-  horizontal
->
-  Follow our three step quickstart guide.
-</Card>
+## O que voce pode fazer
 
-## Make it yours
-
-Design a docs site that looks great and empowers your users.
-
-<Columns cols={2}>
-  <Card
-    title="Edit locally"
-    icon="pen-to-square"
-    href="/development"
-  >
-    Edit your docs locally and preview them in real time.
+<CardGroup cols={2}>
+  <Card title="Emitir NFS-e" icon="file-invoice" href="/api-reference/emit">
+    Emita notas fiscais de servico em segundos via API
   </Card>
-  <Card
-    title="Customize your site"
-    icon="palette"
-    href="/essentials/settings"
-  >
-    Customize the design and colors of your site to match your brand.
+  <Card title="Gerenciar empresas" icon="building" href="/api-reference/companies-list">
+    Cadastre e gerencie empresas dos seus clientes
   </Card>
-    <Card
-    title="Set up navigation"
-    icon="map"
-    href="/essentials/navigation"
-  >
-    Organize your docs to help users find what they need and succeed with your product.
+  <Card title="Acompanhar notas" icon="list-check" href="/api-reference/invoices-list">
+    Liste, consulte e cancele notas emitidas
   </Card>
-  <Card
-    title="API documentation"
-    icon="terminal"
-    href="/api-reference/introduction"
-  >
-    Auto-generate API documentation from OpenAPI specifications.
+  <Card title="Receber webhooks" icon="webhook" href="/conceitos/webhooks">
+    Seja notificado quando uma nota for autorizada ou rejeitada
   </Card>
-</Columns>
+</CardGroup>
 
-## Create beautiful pages
+## Como funciona
 
-Everything you need to create world-class documentation.
+1. **Cadastre-se** como parceiro no EmiteZap
+2. **Gere uma API Key** no painel em API Keys
+3. **Cadastre a empresa** do seu cliente via API
+4. **Emita notas** enviando os dados do servico e tomador
+5. **Receba webhooks** com o status da nota (autorizada, rejeitada, etc.)
 
-<Columns cols={2}>
-  <Card
-    title="Write with MDX"
-    icon="pen-fancy"
-    href="/essentials/markdown"
-  >
-    Use MDX to style your docs pages.
-  </Card>
-  <Card
-    title="Code samples"
-    icon="code"
-    href="/essentials/code"
-  >
-    Add sample code to demonstrate how to use your product.
-  </Card>
-  <Card
-    title="Images"
-    icon="image"
-    href="/essentials/images"
-  >
-    Display images and other media.
-  </Card>
-  <Card
-    title="Reusable snippets"
-    icon="recycle"
-    href="/essentials/reusable-snippets"
-  >
-    Write once and reuse across your docs.
-  </Card>
-</Columns>
+## Base URL
 
-## Need inspiration?
+```
+https://emitezap.com.br/api/partner/v1
+```
 
-<Card
-  title="See complete examples"
-  icon="stars"
-  href="https://mintlify.com/customers"
->
-  Browse our showcase of exceptional documentation sites.
-</Card>
+## Autenticacao
+
+Todas as requisicoes devem incluir o header `X-API-Key`:
+
+```bash
+curl -X GET https://emitezap.com.br/api/partner/v1/credits \
+  -H "X-API-Key: ez_live_abc12def_x9k2mNpQrLvT8wY3jH6cB1nA4sUeI0oZ"
+```

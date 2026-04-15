@@ -1,0 +1,115 @@
+---
+title: "Criar Tomador"
+api: "POST /companies/{id}/customers"
+description: "Cadastra um novo tomador (cliente) para uma empresa"
+---
+
+## Request
+
+<ParamField path="id" type="string" required>
+  ID da empresa.
+</ParamField>
+
+<ParamField body="cpf_cnpj" type="string" required>
+  CPF ou CNPJ do tomador (com ou sem formatação).
+</ParamField>
+
+<ParamField body="razao_social" type="string" required>
+  Nome ou razão social do tomador.
+</ParamField>
+
+<ParamField body="email" type="string">
+  E-mail do tomador.
+</ParamField>
+
+<ParamField body="telefone" type="string">
+  Telefone do tomador.
+</ParamField>
+
+<ParamField body="logradouro" type="string">
+  Endereço do tomador.
+</ParamField>
+
+<ParamField body="numero" type="string">
+  Número do endereço.
+</ParamField>
+
+<ParamField body="bairro" type="string">
+  Bairro.
+</ParamField>
+
+<ParamField body="municipio" type="string">
+  Município.
+</ParamField>
+
+<ParamField body="uf" type="string">
+  UF.
+</ParamField>
+
+<ParamField body="cep" type="string">
+  CEP.
+</ParamField>
+
+## Response
+
+<ResponseField name="id" type="string">
+  ID único do tomador criado.
+</ResponseField>
+
+<ResponseField name="cpf_cnpj" type="string">
+  CPF ou CNPJ do tomador.
+</ResponseField>
+
+<ResponseField name="razao_social" type="string">
+  Nome ou razão social.
+</ResponseField>
+
+<ResponseField name="email" type="string">
+  E-mail do tomador.
+</ResponseField>
+
+<ResponseField name="created_at" type="string">
+  Data de criação.
+</ResponseField>
+
+<RequestExample>
+```bash
+curl -X POST https://emitezap.com.br/api/partner/v1/companies/comp_9f8a7b6c5d4e3f2a/customers \
+  -H "X-API-Key: ez_live_abc123_sk_7f8a9b2c4d6e1f3a5b7c9d0e2f4a6b8c" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "cpf_cnpj": "987.654.321-00",
+    "razao_social": "Maria Fernanda Silva",
+    "email": "maria@example.com",
+    "telefone": "(21) 97777-6666",
+    "logradouro": "Av. Paulista",
+    "numero": "1000",
+    "bairro": "Bela Vista",
+    "municipio": "São Paulo",
+    "uf": "SP",
+    "cep": "01310-100"
+  }'
+```
+</RequestExample>
+
+<ResponseExample>
+```json 201
+{
+  "id": "cust_f1e2d3c4b5a6",
+  "cpf_cnpj": "987.654.321-00",
+  "razao_social": "Maria Fernanda Silva",
+  "email": "maria@example.com",
+  "created_at": "2026-04-15T14:30:00Z"
+}
+```
+
+```json 422
+{
+  "error": "validation_error",
+  "message": "Dados inválidos.",
+  "errors": {
+    "cpf_cnpj": ["CPF/CNPJ inválido."]
+  }
+}
+```
+</ResponseExample>

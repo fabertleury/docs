@@ -1,0 +1,117 @@
+---
+title: "Emitir NFS-e"
+api: "POST /emit"
+description: "Emite uma nota fiscal de serviço eletrônica (NFS-e)"
+---
+
+## Request
+
+<ParamField body="company_id" type="string" required>
+  ID da empresa emissora. Obtido ao cadastrar a empresa via API.
+</ParamField>
+
+<ParamField body="servico" type="object" required>
+  Dados do serviço prestado.
+
+  <Expandable title="Campos do serviço">
+    <ParamField body="descricao" type="string" required>
+      Descrição do serviço prestado.
+    </ParamField>
+    <ParamField body="valor" type="number" required>
+      Valor do serviço em reais (ex: 5000.00).
+    </ParamField>
+  </Expandable>
+</ParamField>
+
+<ParamField body="tomador" type="object" required>
+  Dados do tomador do serviço (cliente).
+
+  <Expandable title="Campos do tomador">
+    <ParamField body="cpf_cnpj" type="string" required>
+      CPF ou CNPJ do tomador (com ou sem formatação).
+    </ParamField>
+    <ParamField body="razao_social" type="string" required>
+      Nome ou razão social do tomador.
+    </ParamField>
+    <ParamField body="email" type="string">
+      E-mail do tomador para envio automático da nota.
+    </ParamField>
+  </Expandable>
+</ParamField>
+
+<ParamField body="metadata" type="object">
+  Metadados opcionais para controle interno.
+
+  <Expandable title="Campos de metadata">
+    <ParamField body="external_id" type="string">
+      ID externo para correlação com seu sistema.
+    </ParamField>
+  </Expandable>
+</ParamField>
+
+## Response
+
+<ResponseField name="invoice_id" type="string">
+  ID único da nota fiscal criada.
+</ResponseField>
+
+<ResponseField name="status" type="string">
+  Status atual da nota. Valores possíveis: `processing`, `authorized`, `rejected`, `error`.
+</ResponseField>
+
+<ResponseField name="external_id" type="string">
+  ID externo informado na requisição (se fornecido).
+</ResponseField>
+
+<ResponseField name="created_at" type="string">
+  Data e hora de criação no formato ISO 8601.
+</ResponseField>
+
+<RequestExample>
+```bash
+curl -X POST https://emitezap.com.br/api/partner/v1/emit \
+  -H "X-API-Key: ez_live_abc123_sk_7f8a9b2c4d6e1f3a5b7c9d0e2f4a6b8c" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "company_id": "comp_9f8a7b6c5d4e3f2a",
+    "servico": {
+      "descricao": "Desenvolvimento de software sob demanda",
+      "valor": 5000.00
+    },
+    "tomador": {
+      "cpf_cnpj": "987.654.321-00",
+      "razao_social": "Maria Fernanda Silva",
+      "email": "maria@example.com"
+    },
+    "metadata": {
+      "external_id": "pedido-001"
+    }
+  }'
+```
+</RequestExample>
+
+<ResponseExample>
+```json 202
+{
+  "invoice_id": "inv_a1b2c3d4e5f6",
+  "status": "processing",
+  "external_id": "pedido-001",
+  "created_at": "2026-04-15T14:30:00Z"
+}
+```
+
+```json 402
+{
+  "error": "insufficient_credits",
+  "message": "Saldo insuficiente. Você possui 0 créditos.",
+  "balance": 0
+}
+```
+
+```json 404
+{
+  "error": "company_not_found",
+  "message": "Empresa não encontrada com o ID informado."
+}
+```
+</ResponseExample>

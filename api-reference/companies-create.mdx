@@ -1,0 +1,136 @@
+---
+title: "Criar Empresa"
+api: "POST /companies"
+description: "Cadastra uma nova empresa para emissão de notas fiscais"
+---
+
+## Request
+
+<ParamField body="cnpj" type="string" required>
+  CNPJ da empresa (com ou sem formatação).
+</ParamField>
+
+<ParamField body="razao_social" type="string" required>
+  Razão social da empresa.
+</ParamField>
+
+<ParamField body="regime_tributario" type="string" required>
+  Regime tributário da empresa. Valores aceitos: `mei`, `simples_nacional`, `lucro_presumido`, `lucro_real`.
+</ParamField>
+
+<ParamField body="municipio" type="string" required>
+  Município da empresa.
+</ParamField>
+
+<ParamField body="uf" type="string" required>
+  UF (estado) da empresa. Ex: `SP`, `RJ`, `MG`.
+</ParamField>
+
+<ParamField body="nome_fantasia" type="string">
+  Nome fantasia da empresa.
+</ParamField>
+
+<ParamField body="email" type="string">
+  E-mail da empresa.
+</ParamField>
+
+<ParamField body="telefone" type="string">
+  Telefone da empresa.
+</ParamField>
+
+<ParamField body="logradouro" type="string">
+  Endereço (rua/avenida) da empresa.
+</ParamField>
+
+<ParamField body="numero" type="string">
+  Número do endereço.
+</ParamField>
+
+<ParamField body="inscricao_municipal" type="string">
+  Inscrição municipal da empresa.
+</ParamField>
+
+<ParamField body="inscricao_estadual" type="string">
+  Inscrição estadual da empresa.
+</ParamField>
+
+## Response
+
+<ResponseField name="id" type="string">
+  ID único da empresa criada.
+</ResponseField>
+
+<ResponseField name="cnpj" type="string">
+  CNPJ da empresa.
+</ResponseField>
+
+<ResponseField name="razao_social" type="string">
+  Razão social da empresa.
+</ResponseField>
+
+<ResponseField name="nome_fantasia" type="string">
+  Nome fantasia da empresa.
+</ResponseField>
+
+<ResponseField name="regime_tributario" type="string">
+  Regime tributário.
+</ResponseField>
+
+<ResponseField name="municipio" type="string">
+  Município.
+</ResponseField>
+
+<ResponseField name="uf" type="string">
+  UF.
+</ResponseField>
+
+<ResponseField name="created_at" type="string">
+  Data de criação.
+</ResponseField>
+
+<RequestExample>
+```bash
+curl -X POST https://emitezap.com.br/api/partner/v1/companies \
+  -H "X-API-Key: ez_live_abc123_sk_7f8a9b2c4d6e1f3a5b7c9d0e2f4a6b8c" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "cnpj": "12.345.678/0001-90",
+    "razao_social": "Tech Solutions Ltda",
+    "nome_fantasia": "TechSol",
+    "regime_tributario": "simples_nacional",
+    "municipio": "São Paulo",
+    "uf": "SP",
+    "email": "fiscal@techsol.com.br",
+    "telefone": "(11) 99999-8888",
+    "logradouro": "Rua Augusta",
+    "numero": "1500",
+    "inscricao_municipal": "12345678"
+  }'
+```
+</RequestExample>
+
+<ResponseExample>
+```json 201
+{
+  "id": "comp_9f8a7b6c5d4e3f2a",
+  "cnpj": "12.345.678/0001-90",
+  "razao_social": "Tech Solutions Ltda",
+  "nome_fantasia": "TechSol",
+  "regime_tributario": "simples_nacional",
+  "municipio": "São Paulo",
+  "uf": "SP",
+  "created_at": "2026-04-15T14:30:00Z"
+}
+```
+
+```json 422
+{
+  "error": "validation_error",
+  "message": "Dados inválidos.",
+  "errors": {
+    "cnpj": ["CNPJ inválido ou já cadastrado."],
+    "regime_tributario": ["Valor inválido. Use: mei, simples_nacional, lucro_presumido ou lucro_real."]
+  }
+}
+```
+</ResponseExample>

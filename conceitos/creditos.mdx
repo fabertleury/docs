@@ -1,0 +1,66 @@
+---
+title: "Créditos"
+description: "Como funciona o sistema de créditos para emissão de notas"
+---
+
+## Como funciona
+
+O sistema de créditos é simples:
+
+<Steps>
+  <Step title="Compre créditos">
+    Adquira créditos via PIX no painel do parceiro.
+  </Step>
+  <Step title="Emita notas">
+    Cada nota fiscal emitida consome **1 crédito**.
+  </Step>
+  <Step title="Acompanhe">
+    Consulte seu saldo e histórico via API ou painel.
+  </Step>
+</Steps>
+
+## Regras
+
+| Regra                | Detalhe                                          |
+|----------------------|--------------------------------------------------|
+| 1 crédito = 1 nota   | Independente do valor ou tipo da nota fiscal      |
+| Compra via PIX       | Pagamento instantâneo, créditos liberados na hora |
+| Preço por parceiro   | O valor do crédito é definido pelo administrador  |
+| Sem expiração        | Créditos comprados nunca expiram                  |
+
+## Consultar saldo
+
+Use o endpoint [GET /credits](/api-reference/credits) para consultar seu saldo atual:
+
+```bash
+curl -X GET https://emitezap.com.br/api/partner/v1/credits \
+  -H "X-API-Key: ez_live_abc123_sk_7f8a9b2c4d6e1f3a5b7c9d0e2f4a6b8c"
+```
+
+```json
+{
+  "balance": 847,
+  "used": 153,
+  "total_purchased": 1000
+}
+```
+
+## Créditos insuficientes
+
+Ao tentar emitir uma nota sem créditos suficientes, a API retorna status `402`:
+
+```json
+{
+  "error": "insufficient_credits",
+  "message": "Saldo insuficiente. Você possui 0 créditos. Adquira mais créditos no painel.",
+  "balance": 0
+}
+```
+
+## Comprar créditos
+
+1. Acesse o [Painel de Parceiro](https://emitezap.com.br/painel/dashboard)
+2. Vá em **Créditos > Comprar**
+3. Escolha a quantidade desejada
+4. Pague via PIX
+5. Os créditos são creditados automaticamente após a confirmação do pagamento

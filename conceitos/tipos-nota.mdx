@@ -1,0 +1,70 @@
+---
+title: "Tipos de Nota Fiscal"
+description: "NFS-e, NF-e e os tipos de nota suportados pela API"
+---
+
+## Tipos suportados
+
+A EmiteZap Partner API suporta a emissão dos seguintes tipos de nota fiscal:
+
+### NFS-e — Nota Fiscal de Serviço Eletrônica
+
+Para prestação de serviços. Emitida junto à **prefeitura** do município do prestador.
+
+| Característica      | Detalhe                                          |
+|---------------------|--------------------------------------------------|
+| Uso                 | Serviços (consultoria, desenvolvimento, etc.)    |
+| Órgão emissor       | Prefeitura Municipal                             |
+| Roteamento          | Automático por município                         |
+| Disponibilidade     | Disponível                                      |
+
+```bash
+curl -X POST https://emitezap.com.br/api/partner/v1/emit \
+  -H "X-API-Key: sua_chave_aqui" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "company_id": "comp_9f8a7b6c5d4e3f2a",
+    "servico": {
+      "descricao": "Consultoria em tecnologia da informação",
+      "valor": 3500.00
+    },
+    "tomador": {
+      "cpf_cnpj": "12.345.678/0001-90",
+      "razao_social": "Empresa Cliente Ltda"
+    }
+  }'
+```
+
+### NF-e — Nota Fiscal Eletrônica
+
+Para venda de produtos e mercadorias. Emitida junto à **SEFAZ** (Secretaria da Fazenda estadual).
+
+| Característica      | Detalhe                                          |
+|---------------------|--------------------------------------------------|
+| Uso                 | Produtos e mercadorias                           |
+| Órgão emissor       | SEFAZ Estadual                                   |
+| Roteamento          | Nacional (SEFAZ)                                 |
+| Disponibilidade     | Disponível                                      |
+
+### NFC-e — Nota Fiscal de Consumidor Eletrônica
+
+Para vendas ao consumidor final no varejo.
+
+| Característica      | Detalhe                                          |
+|---------------------|--------------------------------------------------|
+| Uso                 | Varejo / ponto de venda                          |
+| Órgão emissor       | SEFAZ Estadual                                   |
+| Disponibilidade     | **Em breve**                                     |
+
+<Info>
+  O suporte a NFC-e está em desenvolvimento e será disponibilizado em breve.
+</Info>
+
+## Roteamento automático
+
+A API identifica automaticamente o tipo de roteamento necessário:
+
+- **Municipal** — NFS-e são roteadas para a prefeitura do município da empresa emissora
+- **Nacional** — NF-e são roteadas para a SEFAZ do estado da empresa emissora
+
+Você não precisa se preocupar com o roteamento — a API cuida de tudo automaticamente com base no tipo de nota e nos dados da empresa cadastrada.

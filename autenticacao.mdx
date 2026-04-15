@@ -1,0 +1,106 @@
+---
+title: "Autenticação"
+description: "Como autenticar suas requisições na Partner API"
+---
+
+## API Key
+
+Todas as requisições à Partner API devem incluir o header `X-API-Key` com sua chave de acesso.
+
+```bash
+curl -X GET https://emitezap.com.br/api/partner/v1/companies \
+  -H "X-API-Key: ez_live_abc123_sk_7f8a9b2c4d6e1f3a5b7c9d0e2f4a6b8c"
+```
+
+### Formato da chave
+
+As chaves seguem o formato:
+
+```
+ez_live_{prefix}_{secret}
+```
+
+| Parte      | Descrição                              |
+|------------|----------------------------------------|
+| `ez_live_` | Prefixo fixo indicando chave de produção |
+| `{prefix}` | Identificador único da chave (6 caracteres) |
+| `{secret}` | Segredo da chave (32 caracteres hex)   |
+
+<Warning>
+  Nunca exponha sua API Key em código frontend, repositórios públicos ou logs. Trate-a como uma senha.
+</Warning>
+
+## Escopos
+
+Cada API Key pode ter escopos específicos que limitam suas permissões:
+
+| Escopo            | Descrição                                |
+|-------------------|------------------------------------------|
+| `emit`            | Emitir notas fiscais                     |
+| `companies:read`  | Listar e consultar empresas              |
+| `companies:write` | Criar e atualizar empresas               |
+| `invoices:read`   | Listar e consultar notas fiscais         |
+| `invoices:write`  | Cancelar notas fiscais                   |
+| `credits:read`    | Consultar saldo e histórico de créditos  |
+
+<Tip>
+  Crie chaves com o mínimo de escopos necessários. Por exemplo, um serviço que apenas consulta notas precisa apenas do escopo `invoices:read`.
+</Tip>
+
+## Rate Limiting
+
+A API aplica limites de requisições por chave:
+
+| Plano   | Limite              |
+|---------|---------------------|
+| Padrão  | 60 requisições/min  |
+
+Os headers de resposta incluem informações sobre o rate limit:
+
+```
+X-RateLimit-Limit: 60
+X-RateLimit-Remaining: 57
+X-RateLimit-Reset: 1713192060
+```
+
+Quando o limite é excedido, a API retorna status `429`:
+
+```json
+{
+  "error": "rate_limit_exceeded",
+  "message": "Limite de requisições excedido. Tente novamente em 45 segundos.",
+  "retry_after": 45
+}
+```
+
+## IP Whitelist
+
+Para maior segurança, você pode configurar uma lista de IPs permitidos no painel. Quando ativada, requisições de IPs não listados serão rejeitadas com status `403`.
+
+Configure no **Painel > Configurações > API Keys > IP Whitelist**.
+
+## Códigos de erro de autenticação
+
+| Código | Erro                  | Descrição                                              |
+|--------|-----------------------|--------------------------------------------------------|
+| `401`  | `unauthorized`        | API Key ausente, inválida ou revogada                  |
+| `403`  | `forbidden`           | IP não permitido ou escopo insuficiente para a operação |
+| `429`  | `rate_limit_exceeded` | Limite de requisições excedido                         |
+
+### Exemplo de erro 401
+
+```json
+{
+  "error": "unauthorized",
+  "message": "API Key inválida ou revogada. Verifique sua chave no painel."
+}
+```
+
+### Exemplo de erro 403
+
+```json
+{
+  "error": "forbidden",
+  "message": "Escopo insuficiente. Esta operação requer o escopo 'emit'."
+}
+```

@@ -1,0 +1,64 @@
+---
+title: "Cancelar Nota Fiscal"
+api: "DELETE /invoices/{id}"
+description: "Solicita o cancelamento de uma nota fiscal junto à prefeitura ou SEFAZ"
+---
+
+## Request
+
+<ParamField path="id" type="string" required>
+  ID da nota fiscal a ser cancelada.
+</ParamField>
+
+<ParamField body="motivo" type="string">
+  Motivo do cancelamento. Algumas prefeituras exigem justificativa.
+</ParamField>
+
+## Response
+
+<ResponseField name="id" type="string">
+  ID da nota fiscal.
+</ResponseField>
+
+<ResponseField name="status" type="string">
+  Novo status da nota: `cancelling` (cancelamento em processamento).
+</ResponseField>
+
+<ResponseField name="message" type="string">
+  Mensagem de confirmação.
+</ResponseField>
+
+<RequestExample>
+```bash
+curl -X DELETE https://emitezap.com.br/api/partner/v1/invoices/inv_a1b2c3d4e5f6 \
+  -H "X-API-Key: ez_live_abc123_sk_7f8a9b2c4d6e1f3a5b7c9d0e2f4a6b8c" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "motivo": "Serviço cancelado pelo cliente"
+  }'
+```
+</RequestExample>
+
+<ResponseExample>
+```json 200
+{
+  "id": "inv_a1b2c3d4e5f6",
+  "status": "cancelling",
+  "message": "Cancelamento solicitado. Você será notificado via webhook quando o cancelamento for processado."
+}
+```
+
+```json 404
+{
+  "error": "invoice_not_found",
+  "message": "Nota fiscal não encontrada com o ID informado."
+}
+```
+
+```json 422
+{
+  "error": "cancel_not_allowed",
+  "message": "Esta nota não pode ser cancelada. Apenas notas com status 'authorized' podem ser canceladas."
+}
+```
+</ResponseExample>

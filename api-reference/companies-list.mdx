@@ -1,0 +1,109 @@
+---
+title: "Listar Empresas"
+api: "GET /companies"
+description: "Lista todas as empresas cadastradas pelo parceiro"
+---
+
+## Request
+
+<ParamField query="page" type="integer">
+  Número da página (padrão: 1).
+</ParamField>
+
+<ParamField query="per_page" type="integer">
+  Itens por página (padrão: 15, máximo: 100).
+</ParamField>
+
+## Response
+
+<ResponseField name="data" type="array">
+  Lista de empresas.
+
+  <Expandable title="Campos da empresa">
+    <ResponseField name="id" type="string">
+      ID único da empresa.
+    </ResponseField>
+    <ResponseField name="cnpj" type="string">
+      CNPJ da empresa.
+    </ResponseField>
+    <ResponseField name="razao_social" type="string">
+      Razão social da empresa.
+    </ResponseField>
+    <ResponseField name="nome_fantasia" type="string">
+      Nome fantasia da empresa.
+    </ResponseField>
+    <ResponseField name="municipio" type="string">
+      Município da empresa.
+    </ResponseField>
+    <ResponseField name="uf" type="string">
+      UF da empresa.
+    </ResponseField>
+    <ResponseField name="regime_tributario" type="string">
+      Regime tributário.
+    </ResponseField>
+    <ResponseField name="created_at" type="string">
+      Data de criação.
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+<ResponseField name="meta" type="object">
+  Informações de paginação.
+
+  <Expandable title="Campos de meta">
+    <ResponseField name="current_page" type="integer">
+      Página atual.
+    </ResponseField>
+    <ResponseField name="last_page" type="integer">
+      Última página.
+    </ResponseField>
+    <ResponseField name="per_page" type="integer">
+      Itens por página.
+    </ResponseField>
+    <ResponseField name="total" type="integer">
+      Total de registros.
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+<RequestExample>
+```bash
+curl -X GET "https://emitezap.com.br/api/partner/v1/companies?page=1&per_page=15" \
+  -H "X-API-Key: ez_live_abc123_sk_7f8a9b2c4d6e1f3a5b7c9d0e2f4a6b8c"
+```
+</RequestExample>
+
+<ResponseExample>
+```json 200
+{
+  "data": [
+    {
+      "id": "comp_9f8a7b6c5d4e3f2a",
+      "cnpj": "12.345.678/0001-90",
+      "razao_social": "Tech Solutions Ltda",
+      "nome_fantasia": "TechSol",
+      "municipio": "São Paulo",
+      "uf": "SP",
+      "regime_tributario": "simples_nacional",
+      "created_at": "2026-04-10T10:00:00Z"
+    },
+    {
+      "id": "comp_1a2b3c4d5e6f7g8h",
+      "cnpj": "98.765.432/0001-10",
+      "razao_social": "Consultoria Digital Ltda",
+      "nome_fantasia": "DigiConsult",
+      "municipio": "Rio de Janeiro",
+      "uf": "RJ",
+      "regime_tributario": "lucro_presumido",
+      "created_at": "2026-04-12T15:30:00Z"
+    }
+  ],
+  "meta": {
+    "current_page": 1,
+    "last_page": 1,
+    "per_page": 15,
+    "total": 2
+  }
+}
+```
+</ResponseExample>
